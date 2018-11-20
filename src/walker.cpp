@@ -50,7 +50,15 @@ int main(int argc, char **argv) {
     ros::NodeHandle n;
     ros::Subscriber depth_sub = n.subscribe("/scan", 1,
                                                 depthCallback);
+    ros::Publisher move_pub = n.advertise<geometry_msgs::Twist>
+                        ("/mobile_base/commands/velocity", 5);
+    ros::Rate loop_rate(10);
+    geometry_msgs::Twist vel;
+    Avoider avoidObstacle;
     while (ros::ok()) {
+        vel = avoidObstacle.get_vel(frontDist);
+        loop_rate.sleep();
+        move_pub.publish(vel);
         ros::spinOnce();
     }
 
