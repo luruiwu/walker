@@ -28,13 +28,18 @@
 
 #include "geometry_msgs/Twist.h"
 
+/**
+ * @brief      Class for avoider behavior to circumvent obstacles.
+ */
 class Avoider {
  private:
     geometry_msgs::Twist straight;
     geometry_msgs::Twist turn;
     float thresh;
  public:
+    // get_vel method declaration
     geometry_msgs::Twist get_vel(float dist);
+    // Constructor declaration
     Avoider();
 };
 

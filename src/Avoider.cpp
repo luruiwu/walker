@@ -25,7 +25,12 @@
 
 #include "walker/Avoider.h"
 
+
+/**
+ * @brief      Constructs the object Avoider.
+ */
 Avoider::Avoider() {
+    // Initialize straight member to go straight
     straight.linear.x = 0.3;
     straight.linear.y = 0.0;
     straight.linear.z = 0.0;
@@ -33,6 +38,7 @@ Avoider::Avoider() {
     straight.angular.y = 0.0;
     straight.angular.z = 0.0;
 
+    // Initialize turn member to change direction
     turn.linear.x = 0.0;
     turn.linear.y = 0.0;
     turn.linear.z = 0.0;
@@ -43,6 +49,15 @@ Avoider::Avoider() {
     thresh = 0.8;
 }
 
+
+/**
+ * @brief      Gets the velocity for going straight or 
+ * 				turning depending on the min value.
+ *
+ * @param[in]  min   The minimum distance detected by LaserScanner
+ *
+ * @return     The velocity in the from of Twist msg.
+ */
 geometry_msgs::Twist Avoider::get_vel(float min) {
     if (min < thresh) {
         return turn;
