@@ -15,7 +15,7 @@
  */
 
 /**
-* @file Avoider.h
+* @file walk.cpp
 * @author Jerrar Bukhari
 * @date 16 November 2018
 * @copyright 2018 Jerrar Bukhari
@@ -23,19 +23,38 @@
 * go straight or turn
 */
 
-#ifndef INCLUDE_AVOIDER_H_
-#define INCLUDE_AVOIDER_H_
-
 #include <cmath>
+#include <algorithm>
+#include <iostream>
 
+#include "ros/ros.h"
+#include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
+#include "walker/Avoider.h"
 
-class Avoider {
- private:
-    geometry_msgs::Twist straight;
-    geometry_msgs::Twist turn;
- public:
-    geometry_msgs::Twist get_vel(float dist);
+float frontDist;
+
+void depthCallback(const sensor_msgs::LaserScanConstPtr& points) {
+    float min = 100;
+    for (auto i : points->ranges) {
+        if (!std::isnan(i)) {
+            if (i < min) { min = i;}
+        }
+    }
+    ROS_DEBUG("Distance: %f", min);
+    frontDist = min;
 }
 
-#endif  // INCLUDE_AVOIDER_H_
+int main(int argc, char **argv) {
+    ros::init(argc, argv, "walk");
+    ros::NodeHandle n;
+    ros::Subscriber depth_sub = n.subscribe("/scan", 1,
+                                                depthCallback);
+    while (ros::ok()) {
+        ros::spinOnce();
+    }
+
+    return 0;
+}
+
+
