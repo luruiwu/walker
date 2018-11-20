@@ -1,0 +1,5 @@
+vendetta@vendetta-Inspiron-15-7000-Gaming:~/catkin_ws/src/walker$ cpplint ./src/* ./include/walker/*
+Done processing ./src/Avoider.cpp
+Done processing ./src/walker.cpp
+Done processing ./include/walker/Avoider.h
+

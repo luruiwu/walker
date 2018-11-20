@@ -23,8 +23,8 @@
 * go straight or turn
 */
 
-#ifndef INCLUDE_AVOIDER_H_
-#define INCLUDE_AVOIDER_H_
+#ifndef INCLUDE_WALKER_AVOIDER_H_
+#define INCLUDE_WALKER_AVOIDER_H_
 
 #include "geometry_msgs/Twist.h"
 
@@ -38,4 +38,4 @@ class Avoider {
     Avoider();
 };
 
-#endif  // INCLUDE_AVOIDER_H_
+#endif  // INCLUDE_WALKER_AVOIDER_H_
