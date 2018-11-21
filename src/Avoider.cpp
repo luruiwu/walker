@@ -29,7 +29,7 @@
 /**
  * @brief      Constructs the object Avoider.
  */
-Avoider::Avoider() {
+Avoider::Avoider(ros::NodeHandle &n):n_(n) {
     // Initialize straight member to go straight
     straight.linear.x = 0.3;
     straight.linear.y = 0.0;
@@ -47,6 +47,10 @@ Avoider::Avoider() {
     turn.angular.z = 0.5;
 
     thresh = 0.8;
+    frontDist = 10;
+
+    // create subscriber to laser scanner data at /scan topic
+    depth_sub = n_.subscribe("/scan", 1, &Avoider::depthCallback, this);
 }
 
 
@@ -58,10 +62,30 @@ Avoider::Avoider() {
  *
  * @return     The velocity in the from of Twist msg.
  */
-geometry_msgs::Twist Avoider::get_vel(float min) {
-    if (min < thresh) {
+geometry_msgs::Twist Avoider::get_vel() {
+    if (frontDist < thresh) {
         return turn;
     } else {
         return straight;
     }
 }
+
+/**
+ * @brief      Callabck function for subcriber to Laser scanner
+ *
+ * @param[in]  points  The range points from Laser scanner
+ */
+void Avoider::depthCallback(const sensor_msgs::LaserScanConstPtr& points) {
+    // arbitrary max value
+    float min = 100;
+    // custom min function to get closest point
+    for (auto i : points->ranges) {
+        if (!std::isnan(i)) {
+            if (i < min) { min = i;}
+        }
+    }
+    ROS_INFO("Distance: %f", min);
+    frontDist = min;
+}
+
+

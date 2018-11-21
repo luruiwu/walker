@@ -27,6 +27,9 @@
 #define INCLUDE_WALKER_AVOIDER_H_
 
 #include "geometry_msgs/Twist.h"
+#include "sensor_msgs/LaserScan.h"
+#include "ros/ros.h"
+
 
 /**
  * @brief      Class for avoider behavior to circumvent obstacles.
@@ -36,11 +39,16 @@ class Avoider {
     geometry_msgs::Twist straight;
     geometry_msgs::Twist turn;
     float thresh;
+    float frontDist;
+    ros::Subscriber depth_sub;
+    ros::NodeHandle n_;
+
  public:
     // get_vel method declaration
-    geometry_msgs::Twist get_vel(float dist);
+    geometry_msgs::Twist get_vel();
     // Constructor declaration
-    Avoider();
+    explicit Avoider(ros::NodeHandle &n);
+    void depthCallback(const sensor_msgs::LaserScanConstPtr& points);
 };
 
 #endif  // INCLUDE_WALKER_AVOIDER_H_

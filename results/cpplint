@@ -1,5 +1,7 @@
 vendetta@vendetta-Inspiron-15-7000-Gaming:~/catkin_ws/src/walker$ cpplint ./src/* ./include/walker/*
 Done processing ./src/Avoider.cpp
 Done processing ./src/walker.cpp
+./include/walker/Avoider.h:50:  Is this a non-const reference? If so, make const or use a pointer: ros::NodeHandle &n  [runtime/references] [2]
 Done processing ./include/walker/Avoider.h
+Total errors found: 1
 
